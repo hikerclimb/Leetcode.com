@@ -1,3 +1,6 @@
-select
-if((num = lead(num, 1,NULL) OVER()) and (num = lag(num,1, NULL) OVER()),num, NULL)  
-as ConsecutiveNums from Logs limit 1,1
+with cte as (
+    select num,
+    lead(num, 1) OVER() num1, lead(num, 2) OVER() num2
+from Logs )
+
+select distinct num ConsecutiveNums from cte where (num = num1) and (num=num2)
